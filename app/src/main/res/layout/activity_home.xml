@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".home.HomeActivity">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.text.stopwatch.home.HomeVM" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.1" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.9" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/bg_timer"
+            android:paddingVertical="10dp"
+            android:text="@{viewModel.time}"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/guide_end"
+            app:layout_constraintStart_toStartOf="@+id/guide_start"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="00:00:00" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_start"
+            style="@style/App.Button"
+            android:onClick="@{()->viewModel.start()}"
+            android:text="@string/start"
+            android:visibility="@{viewModel.izStarted ? View.GONE : View.VISIBLE}"
+            app:layout_constraintEnd_toEndOf="@+id/tv_time"
+            app:layout_constraintStart_toStartOf="@+id/tv_time"
+            app:layout_constraintTop_toBottomOf="@+id/tv_time"
+            app:layout_constraintWidth_percent="0.4" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_pause"
+            style="@style/App.Button"
+            android:onClick="@{()->viewModel.pauseResume()}"
+            android:text="@{viewModel.izPaused ? @string/resume : @string/pause}"
+            app:layout_constraintEnd_toStartOf="@+id/btn_stop"
+            app:layout_constraintStart_toStartOf="@+id/tv_time"
+            app:layout_constraintTop_toBottomOf="@+id/tv_time"
+            tools:text="@string/pause" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_stop"
+            style="@style/App.Button"
+            android:layout_marginStart="10dp"
+            android:onClick="@{()->viewModel.stop()}"
+            android:text="@string/stop_reset"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="@+id/tv_time"
+            app:layout_constraintStart_toEndOf="@id/btn_pause"
+            app:layout_constraintTop_toBottomOf="@+id/tv_time" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="100dp"
+            android:text="@{viewModel.izStarted ? (viewModel.izPaused ? @string/paused : @string/running) : @string/stopped}"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/guide_end"
+            app:layout_constraintStart_toStartOf="@+id/guide_start"
+            tools:text="start" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/group_second"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{viewModel.izStarted ? View.VISIBLE : View.GONE}"
+            app:constraint_referenced_ids="btn_pause,btn_stop" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
